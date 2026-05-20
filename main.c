@@ -6,9 +6,7 @@
 #include "juego.h"
 
 int main(){
-    struct Coordenadas pos;
-    pos.x = 1;
-    pos.y = 1;
+    enum MODO_JUEGO modo_juego = MENU;
 
     srand(time(NULL));
 
@@ -20,11 +18,11 @@ int main(){
     printf("instrucciones insrucciones instrucciones \n");
     printf("--- Presiona cualquier tecla --- \n -");
     inicio = _getch();
-    
+    modo_juego = NIVEL_1;
 
     system("cls");
 
-    juego_mov(pos, monedas);
+    juego_mov(monedas, modo_juego);
 
 
     
