@@ -4,6 +4,7 @@
 #include <time.h>
 #include <Windows.h>
 #include <stdbool.h>
+#include "colores.h"
 #include "juego.h"
 
 static int limite_A = 0;
@@ -24,6 +25,17 @@ void cursor(){
     SetConsoleCursorPosition(hConsole, pos);
 }
 
+void colores_ansi(){
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if(hOut == INVALID_HANDLE_VALUE) return;
+
+    DWORD dwMode = 0;
+    if(GetConsoleMode(hOut, &dwMode)){
+        dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        SetConsoleMode(hOut, dwMode);
+    }
+}
+
 
 void llenar_matriz(char mat[][COLUMNAS], int monedas, const char *nombre_archivo){
     FILE *archivo = fopen(nombre_archivo, "r");
@@ -42,11 +54,11 @@ void llenar_matriz(char mat[][COLUMNAS], int monedas, const char *nombre_archivo
     int i = 0;
     struct Coordenadas punto_Moneda;
     while(i < monedas){
-        punto_Moneda.x = rand()%58;
-        punto_Moneda.y = rand()%58;
+        punto_Moneda.x = (rand()%58) + 1;
+        punto_Moneda.y = (rand()%58) + 1;
 
-        if(validarMovimiento(mat, 60, punto_Moneda.y, punto_Moneda.x) != 1){
-            mat[punto_Moneda.x][punto_Moneda.y] = 'M';
+        if(validarMovimiento(mat, 60, punto_Moneda.x, punto_Moneda.y) != 1){
+            mat[punto_Moneda.x][punto_Moneda.y] = 184;
             i++;
         }
     }
@@ -63,7 +75,14 @@ void imprimir_matriz(char mat [][COLUMNAS], struct Coordenadas pos){
 
      for(int i=limite_A; i<=limite_B; i++){
         for (int j=limite_C; j<=limite_D; j++){
-            printf("%c ", mat[i][j]);
+            if(mat[i][j] == '#'){
+                printf("%c%c", 219, 219);
+            }else if(mat[i][j] == 184){
+                printf(AMARILLO "%c " RESET, mat[i][j]);
+            }else{
+                printf("%c ", mat[i][j]);
+            }
+           //printf("%c ", mat[i][j]);
         }
         printf("\n");
     }
@@ -72,7 +91,7 @@ void imprimir_matriz(char mat [][COLUMNAS], struct Coordenadas pos){
 void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *victoria){
     switch (mov){
         case 'w': 
-            if(pos->x-1 > 0 && (validarMovimiento(mat, 60, pos->x-1, pos->y)) != 1){
+            if(pos->x-1 > 0 && (validarMovimiento(mat, COLUMNAS, pos->x-1, pos->y)) != 1){
                 if((detectarObjeto(mat, COLUMNAS, pos->x-1, pos->y, 'E')) == 1){
                     *victoria = true;
                 }
@@ -86,7 +105,7 @@ void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *v
             break;
 
         case 's':
-            if(pos->x+1 < FILAS  && (validarMovimiento(mat, 60, pos->x+1, pos->y)) != 1){
+            if(pos->x+1 < FILAS  && (validarMovimiento(mat, COLUMNAS, pos->x+1, pos->y)) != 1){
                 if((detectarObjeto(mat, COLUMNAS, pos->x+1, pos->y, 'E')) == 1){
                     *victoria = true;
                 }
@@ -100,7 +119,7 @@ void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *v
             break;
 
         case 'a':
-            if(pos->y-1 > 0  && (validarMovimiento(mat, 60, pos->x, pos->y-1)) != 1){
+            if(pos->y-1 > 0  && (validarMovimiento(mat, COLUMNAS, pos->x, pos->y-1)) != 1){
                 if((detectarObjeto(mat, COLUMNAS, pos->x, pos->y-1, 'E')) == 1){
                     *victoria = true;
                 }
@@ -114,7 +133,7 @@ void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *v
 
 
         case 'd': 
-            if(pos->y+1 < COLUMNAS-1  && (validarMovimiento(mat, 60, pos->x, pos->y+1)) != 1){
+            if(pos->y+1 < COLUMNAS-1  && (validarMovimiento(mat, COLUMNAS, pos->x, pos->y+1)) != 1){
                 if((detectarObjeto(mat, COLUMNAS, pos->x, pos->y+1, 'E')) == 1){
                     *victoria = true;
                 }
@@ -132,6 +151,8 @@ void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *v
 }
 
 void juego_mov(int monedas, enum MODO_JUEGO modo_juego){
+     colores_ansi();
+
     char laberinto[FILAS][COLUMNAS];
     bool victoria = false;
 
@@ -182,7 +203,6 @@ void juego_mov(int monedas, enum MODO_JUEGO modo_juego){
 }
 
 void imprimirVictoria(enum MODO_JUEGO *modo_juego){
-    char continuar;
     system("cls");
     printf("=== VICTORIA ===\n");
     printf("Felicidades! Has superado el nivel ");
@@ -202,10 +222,16 @@ void imprimirVictoria(enum MODO_JUEGO *modo_juego){
             printf("3\n");
             *modo_juego = FINAL;
             break;
+
+        case FINAL: 
+            printf("Felicidades ganaste yuju");
+            break;
+        
+        default: break;
     }
 
     printf("Para continuar, presione cualquier tecla!");
-    continuar = _getch();
+    _getch();
     system("cls");
     if(*modo_juego != FINAL){
         juego_mov(34, *modo_juego);

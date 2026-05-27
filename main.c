@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
+#include "colores.h"
 #include <time.h>
 
 #include "juego.h"
@@ -12,12 +13,10 @@ int main(){
 
     int monedas = rand()%23;
 
-    char inicio;
-
     printf("=========== LABERINTO =========== \n");
     printf("instrucciones insrucciones instrucciones \n");
     printf("--- Presiona cualquier tecla --- \n -");
-    inicio = _getch();
+    _getch();
     modo_juego = NIVEL_1;
 
     system("cls");

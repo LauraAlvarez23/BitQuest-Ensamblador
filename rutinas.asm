@@ -21,7 +21,7 @@ validarMovimiento:
 
     movzx eax, byte[rcx + rax]
 
-    cmp al, '#'
+    cmp al, '#'         ;En la matriz, las paredes todavia se encuentran marcadas por #, el caracter 219 no esta realmente en la matriz (es como una mascara)
     je .mov_invalido
 
     mov eax, 0
