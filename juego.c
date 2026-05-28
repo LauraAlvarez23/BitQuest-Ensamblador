@@ -15,6 +15,8 @@ static int limite_B = 19;
 static int limite_C = 0;
 static int limite_D = 19;
 
+static bool tiene_llave;
+
 void cursor(){
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -95,6 +97,8 @@ void imprimir_matriz(enum MODO_JUEGO modo_juego, char mat [][COLUMNAS], struct C
 
     printf("Salir con tecla 'q' \n");
     printf("MONEDAS: %d/%d\n", monedas_Recolectadas, t_monedas);
+    printf("LLAVE: ");
+    (tiene_llave) ? printf("* \n") : printf("-\n");
     printf("Posicion: (%d, %d)\n", pos.y, pos.x);
     printf("\n");
     
@@ -118,12 +122,15 @@ void imprimir_matriz(enum MODO_JUEGO modo_juego, char mat [][COLUMNAS], struct C
 void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *victoria, int *monedas_Recolectadas){
     switch (mov){
         case 'w': 
-            if(pos->x-1 > 0 && (validarMovimiento(mat, COLUMNAS, pos->x-1, pos->y)) != 1){
+            if(pos->x-1 > 0 && (validarMovimiento(mat, COLUMNAS, pos->x-1, pos->y)) != 1 && (detectarObjeto(mat, COLUMNAS, pos->x-1, pos->y, 'D')) != 1){
                 if((detectarObjeto(mat, COLUMNAS, pos->x-1, pos->y, 'E')) == 1){
                     *victoria = true;
                 }
                 if((detectarObjeto(mat, COLUMNAS, pos->x-1, pos->y, 184)) == 1){
                     (*monedas_Recolectadas)++;
+                }
+                if((detectarObjeto(mat, COLUMNAS, pos->x-1, pos->y, 'K')) == 1){
+                    tiene_llave = true;
                 }
                 pos->x--;
                 if(pos->x <= limite_A && limite_A > 0){
@@ -131,16 +138,26 @@ void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *v
                     limite_B--;
                 }
                 
+            }else if((detectarObjeto(mat, COLUMNAS, pos->x-1, pos->y, 'D')) == 1 && tiene_llave){
+                pos->x--;
+                if(pos->x <= limite_A && limite_A > 0){
+                    limite_A--;
+                    limite_B--;
+                }
+                tiene_llave = false;
             }
             break;
 
         case 's':
-            if(pos->x+1 < FILAS  && (validarMovimiento(mat, COLUMNAS, pos->x+1, pos->y)) != 1){
+            if(pos->x+1 < FILAS  && (validarMovimiento(mat, COLUMNAS, pos->x+1, pos->y)) != 1 && (detectarObjeto(mat, COLUMNAS, pos->x+1, pos->y, 'D')) != 1){
                 if((detectarObjeto(mat, COLUMNAS, pos->x+1, pos->y, 'E')) == 1){
                     *victoria = true;
                 }
                 if((detectarObjeto(mat, COLUMNAS, pos->x+1, pos->y, 184)) == 1){
                     (*monedas_Recolectadas)++;
+                }
+                if((detectarObjeto(mat, COLUMNAS, pos->x+1, pos->y, 'K')) == 1){
+                    tiene_llave = true;
                 }
                 pos->x++;
                 if(pos->x >= limite_B && limite_B < FILAS -1){
@@ -148,39 +165,66 @@ void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *v
                     limite_B++;
                 }
                 
+            }else if((detectarObjeto(mat, COLUMNAS, pos->x+1, pos->y, 'D')) == 1 && tiene_llave){
+                pos->x++;
+                if(pos->x >= limite_B && limite_B < FILAS -1){
+                    limite_A++;
+                    limite_B++;
+                }
+                tiene_llave = false;
             }
             break;
 
         case 'a':
-            if(pos->y-1 > 0  && (validarMovimiento(mat, COLUMNAS, pos->x, pos->y-1)) != 1){
+            if(pos->y-1 > 0  && (validarMovimiento(mat, COLUMNAS, pos->x, pos->y-1)) != 1 && (detectarObjeto(mat, COLUMNAS, pos->x, pos->y-1, 'D')) != 1){
                 if((detectarObjeto(mat, COLUMNAS, pos->x, pos->y-1, 'E')) == 1){
                     *victoria = true;
                 }
                 if((detectarObjeto(mat, COLUMNAS, pos->x, pos->y-1, 184)) == 1){
                     (*monedas_Recolectadas)++;
                 }
+                if((detectarObjeto(mat, COLUMNAS, pos->x, pos->y-1, 'K')) == 1){
+                    tiene_llave = true;
+                }
                 pos->y--;
                 if(pos->y <= limite_C && limite_C > 0){
                     limite_C--;
                     limite_D--;
                 }
+            }else if((detectarObjeto(mat, COLUMNAS, pos->x, pos->y-1, 'D')) == 1 && tiene_llave){
+                pos->y--;
+                if(pos->y <= limite_C && limite_C > 0){
+                    limite_C--;
+                    limite_D--;
+                }
+                tiene_llave = false;
             }
             break;
 
 
         case 'd': 
-            if(pos->y+1 < COLUMNAS-1  && (validarMovimiento(mat, COLUMNAS, pos->x, pos->y+1)) != 1){
+            if(pos->y+1 < COLUMNAS-1  && (validarMovimiento(mat, COLUMNAS, pos->x, pos->y+1)) != 1 && (detectarObjeto(mat, COLUMNAS, pos->x, pos->y+1, 'D')) != 1){
                 if((detectarObjeto(mat, COLUMNAS, pos->x, pos->y+1, 'E')) == 1){
                     *victoria = true;
                 }
                 if((detectarObjeto(mat, COLUMNAS, pos->x, pos->y+1, 184)) == 1){
                     (*monedas_Recolectadas)++;
                 }
+                if((detectarObjeto(mat, COLUMNAS, pos->x, pos->y+1, 'K')) == 1){
+                    tiene_llave = true;
+                }
                 pos->y++;
                 if(pos->y >= limite_D && limite_D < COLUMNAS -1){
                     limite_C++;
                     limite_D++;
                 }
+            }else if((detectarObjeto(mat, COLUMNAS, pos->x, pos->y+1, 'D')) == 1 && tiene_llave){
+                pos->y++;
+                if(pos->y >= limite_D && limite_D < COLUMNAS -1){
+                    limite_C++;
+                    limite_D++;
+                }
+                tiene_llave = false;
             }
             break;
 
@@ -206,6 +250,8 @@ bool juego_mov(enum MODO_JUEGO *modo_juego){
     
     limite_C = 0;
     limite_D = 19;
+
+    tiene_llave = false;
 
     struct Coordenadas pos = {1,1};
 
@@ -277,8 +323,9 @@ void imprimirVictoria(enum MODO_JUEGO *modo_juego){
             break;
 
         case FINAL: 
-            printf("Felicidades ganaste yuju");
+            final_Juego();
             break;
+
         
         default: break;
     }
@@ -289,5 +336,6 @@ void imprimirVictoria(enum MODO_JUEGO *modo_juego){
 }
 
 void final_Juego(){
+    printf("Felicidades has ganado \n");
     printf("yea \n");
 }
