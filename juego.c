@@ -7,6 +7,8 @@
 #include "colores.h"
 #include "juego.h"
 
+static int t_monedas;
+
 static int limite_A = 0;
 static int limite_B = 19;
 
@@ -23,6 +25,8 @@ void cursor(){
 
     COORD pos = {0, 0};
     SetConsoleCursorPosition(hConsole, pos);
+
+    //printf("\033[H\033[J");
 }
 
 void colores_ansi(){
@@ -37,7 +41,7 @@ void colores_ansi(){
 }
 
 
-void llenar_matriz(char mat[][COLUMNAS], int monedas, const char *nombre_archivo){
+void llenar_matriz(char mat[][COLUMNAS], int num_monedas, const char *nombre_archivo){
     FILE *archivo = fopen(nombre_archivo, "r");
     if(archivo == NULL){
         printf("Error. No se pudo abrir el archivo del mapa. \n");
@@ -53,7 +57,7 @@ void llenar_matriz(char mat[][COLUMNAS], int monedas, const char *nombre_archivo
 
     int i = 0;
     struct Coordenadas punto_Moneda;
-    while(i < monedas){
+    while(i < num_monedas){
         punto_Moneda.x = (rand()%58) + 1;
         punto_Moneda.y = (rand()%58) + 1;
 
@@ -65,10 +69,32 @@ void llenar_matriz(char mat[][COLUMNAS], int monedas, const char *nombre_archivo
 }
 
 
-void imprimir_matriz(char mat [][COLUMNAS], struct Coordenadas pos){
+void imprimir_matriz(enum MODO_JUEGO modo_juego, char mat [][COLUMNAS], struct Coordenadas pos, int monedas_Recolectadas){
     cursor();
 
+    switch(modo_juego){
+        case NIVEL_1: 
+            printf("\n====== NIVEL 1 ======\n");
+            break;
+
+        case NIVEL_2:
+            printf("\n====== NIVEL 2 ======\n");
+            break;
+
+        case NIVEL_3:
+            printf("\n====== NIVEL 3 ======\n");
+            break;
+
+        case FINAL: 
+            final_Juego();
+            break;
+        
+        default: break;
+    }
+
+
     printf("Salir con tecla 'q' \n");
+    printf("MONEDAS: %d/%d\n", monedas_Recolectadas, t_monedas);
     printf("Posicion: (%d, %d)\n", pos.y, pos.x);
     printf("\n");
     
@@ -77,23 +103,27 @@ void imprimir_matriz(char mat [][COLUMNAS], struct Coordenadas pos){
         for (int j=limite_C; j<=limite_D; j++){
             if(mat[i][j] == '#'){
                 printf("%c%c", 219, 219);
-            }else if(mat[i][j] == 184){
+            }else if((unsigned char)mat[i][j] == 184){
                 printf(AMARILLO "%c " RESET, mat[i][j]);
+            }else if((unsigned char)mat[i][j] == 190){
+                printf(AZULREY "%c " RESET, mat[i][j]);
             }else{
                 printf("%c ", mat[i][j]);
             }
-           //printf("%c ", mat[i][j]);
         }
         printf("\n");
     }
 }
 
-void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *victoria){
+void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *victoria, int *monedas_Recolectadas){
     switch (mov){
         case 'w': 
             if(pos->x-1 > 0 && (validarMovimiento(mat, COLUMNAS, pos->x-1, pos->y)) != 1){
                 if((detectarObjeto(mat, COLUMNAS, pos->x-1, pos->y, 'E')) == 1){
                     *victoria = true;
+                }
+                if((detectarObjeto(mat, COLUMNAS, pos->x-1, pos->y, 184)) == 1){
+                    (*monedas_Recolectadas)++;
                 }
                 pos->x--;
                 if(pos->x <= limite_A && limite_A > 0){
@@ -109,6 +139,9 @@ void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *v
                 if((detectarObjeto(mat, COLUMNAS, pos->x+1, pos->y, 'E')) == 1){
                     *victoria = true;
                 }
+                if((detectarObjeto(mat, COLUMNAS, pos->x+1, pos->y, 184)) == 1){
+                    (*monedas_Recolectadas)++;
+                }
                 pos->x++;
                 if(pos->x >= limite_B && limite_B < FILAS -1){
                     limite_A++;
@@ -122,6 +155,9 @@ void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *v
             if(pos->y-1 > 0  && (validarMovimiento(mat, COLUMNAS, pos->x, pos->y-1)) != 1){
                 if((detectarObjeto(mat, COLUMNAS, pos->x, pos->y-1, 'E')) == 1){
                     *victoria = true;
+                }
+                if((detectarObjeto(mat, COLUMNAS, pos->x, pos->y-1, 184)) == 1){
+                    (*monedas_Recolectadas)++;
                 }
                 pos->y--;
                 if(pos->y <= limite_C && limite_C > 0){
@@ -137,6 +173,9 @@ void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *v
                 if((detectarObjeto(mat, COLUMNAS, pos->x, pos->y+1, 'E')) == 1){
                     *victoria = true;
                 }
+                if((detectarObjeto(mat, COLUMNAS, pos->x, pos->y+1, 184)) == 1){
+                    (*monedas_Recolectadas)++;
+                }
                 pos->y++;
                 if(pos->y >= limite_D && limite_D < COLUMNAS -1){
                     limite_C++;
@@ -150,11 +189,17 @@ void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *v
     }
 }
 
-void juego_mov(int monedas, enum MODO_JUEGO modo_juego){
-     colores_ansi();
+bool juego_mov(enum MODO_JUEGO *modo_juego){
+    colores_ansi();
 
     char laberinto[FILAS][COLUMNAS];
     bool victoria = false;
+
+
+    int monedasRecolectadas = 0;
+    int totalMonedas = 23;
+
+    t_monedas = 0;
 
     limite_A = 0;
     limite_B = 19;
@@ -164,39 +209,47 @@ void juego_mov(int monedas, enum MODO_JUEGO modo_juego){
 
     struct Coordenadas pos = {1,1};
 
-    if(modo_juego == NIVEL_1){
-        llenar_matriz(laberinto, monedas, "mapa1.txt");
-    }else if(modo_juego == NIVEL_2){
-        llenar_matriz(laberinto, monedas, "mapa2.txt");
-    }else if(modo_juego == NIVEL_3){
-         llenar_matriz(laberinto, monedas, "mapa3.txt");
+    if(*modo_juego == NIVEL_1){
+        llenar_matriz(laberinto, totalMonedas, "mapa1.txt");
+        t_monedas = caracteresMapa(laberinto, FILAS*COLUMNAS, 184);
+    }else if(*modo_juego == NIVEL_2){
+        llenar_matriz(laberinto, totalMonedas, "mapa2.txt");
+        t_monedas = caracteresMapa(laberinto, FILAS*COLUMNAS, 184);
+    }else if(*modo_juego == NIVEL_3){
+         llenar_matriz(laberinto, totalMonedas, "mapa3.txt");
+         t_monedas = caracteresMapa(laberinto, FILAS*COLUMNAS, 184);
     }
     
     laberinto[pos.x][pos.y] = 190;
 
-    imprimir_matriz(laberinto, pos);
+    imprimir_matriz(*modo_juego, laberinto, pos, monedasRecolectadas);
 
     while(1){
         if(_kbhit()){
             char tecla = _getch();
 
+            bool se_movio = false;
+
             if(tecla == 'w' || tecla == 's' || tecla == 'a' || tecla == 'd'){
                 laberinto[pos.x][pos.y] = '.';
 
-                movimiento(laberinto, &pos, tecla, &victoria);
+                movimiento(laberinto, &pos, tecla, &victoria, &monedasRecolectadas);
+                se_movio = true;
 
                 if(victoria){
-                    imprimirVictoria(&modo_juego);
-                    break;
+                    imprimirVictoria(modo_juego);
+                    return true;
                 }
             }else{
                 if(tecla == 'q'){
-                    break;
+                    return false;
                 }
             }
 
-            laberinto[pos.x][pos.y] = 190;
-            imprimir_matriz(laberinto, pos);
+            if(se_movio){
+                laberinto[pos.x][pos.y] = 190;
+                imprimir_matriz(*modo_juego, laberinto, pos, monedasRecolectadas);    
+            }            
         }
         
     }
@@ -233,8 +286,8 @@ void imprimirVictoria(enum MODO_JUEGO *modo_juego){
     printf("Para continuar, presione cualquier tecla!");
     _getch();
     system("cls");
-    if(*modo_juego != FINAL){
-        juego_mov(34, *modo_juego);
-    }
-    
+}
+
+void final_Juego(){
+    printf("yea \n");
 }

@@ -16,11 +16,12 @@ enum MODO_JUEGO {MENU, NIVEL_1, NIVEL_2, NIVEL_3, FINAL};
 
 //Funciones C
 void cursor();
-void juego_mov(int monedas, enum MODO_JUEGO modo_juego);
-void llenar_matriz(char mat[][COLUMNAS],  int monedas, const char *nombre_archivo);
-void imprimir_matriz(char mat [][COLUMNAS], struct Coordenadas pos);
-void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *victoria);
+bool juego_mov(enum MODO_JUEGO *modo_juego);
+void llenar_matriz(char mat[][COLUMNAS],  int num_monedas, const char *nombre_archivo);
+void imprimir_matriz(enum MODO_JUEGO modo_juego, char mat [][COLUMNAS], struct Coordenadas pos, int monedas_recolectadas);
+void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *victoria, int *monedas_recolectadas);
 void imprimirVictoria(enum MODO_JUEGO *modo_juego);
+void final_Juego();
 
 //Funciones NASM
 int caracteresMapa(char mat[][COLUMNAS], int numCeldas, char c);

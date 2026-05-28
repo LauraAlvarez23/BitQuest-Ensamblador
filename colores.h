@@ -15,5 +15,6 @@
 #define BERRY "\x1b[38;5;175m"
 #define AMARILLO "\x1b[38;5;226m"
 #define GRIS "\x1b[38;5;244m"
+#define GRISOSCURO "\x1b[38;5;237m"
 
 #endif

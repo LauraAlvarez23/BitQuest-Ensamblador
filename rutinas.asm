@@ -5,6 +5,37 @@ global caracteresMapa, validarMovimiento, puntaje, detectarObjeto, celdasLibres
 
 
 section .text
+
+caracteresMapa:
+    push rsi
+    xor eax, eax
+
+    ;RCX = matrix
+    ;EDX/RDX = nCeldas
+    ;R8 = caracter
+
+    xor rax, rax 
+    lea rsi, [rcx]
+
+    .loop_matriz:
+    cmp rdx, 0
+    je .fin_caracteresMapa
+
+    cmp byte [rsi], r8b
+    jne .siguiente
+
+    inc eax
+
+    .siguiente:
+    inc rsi
+    dec rdx
+    jmp .loop_matriz
+
+    .fin_caracteresMapa:
+    pop rsi
+    ret
+    
+
 validarMovimiento:
     xor eax, eax
 
