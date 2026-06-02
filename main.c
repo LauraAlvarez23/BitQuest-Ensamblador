@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "colores.h"
 #include <time.h>
 
@@ -14,24 +15,30 @@ int main(){
     printf("=========== LABERINTO =========== \n");
     printf("instrucciones insrucciones instrucciones \n");
     printf("--- Presiona cualquier tecla --- \n -");
-    _getch();
+
+    printf(CYAN "Menu de ayuda = H \n" RESET);
+
+    char caracter = tolower(_getch());
+
+    if (caracter == 'h'){
+        menuAyuda();
+    }
+    
 
     system("cls");
 
     modo_juego = NIVEL_1;
     bool continuar = true;
+    int num_Pasos;
 
     while(continuar && modo_juego != FINAL){
-        continuar = juego_mov(&modo_juego);
+        num_Pasos = 0;
+        continuar = juego_mov(&modo_juego, &num_Pasos);
     }
 
-    if(modo_juego == FINAL){
-        final_Juego();
-    }else{
-        printf("Juego terminado manualmente \n");
-    }
+    final_Juego(modo_juego);
 
-    printf("Presiona cualquier tecla para salir!");
+    printf("\nPresiona cualquier tecla para salir!");
     _getch();
     system("cls");
 

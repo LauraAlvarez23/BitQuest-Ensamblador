@@ -41,8 +41,9 @@ validarMovimiento:
 
     ;RCX = matriz
     ;EDX/RDX = nColumnas
-    ;R9 = columna
     ;R8 = fila
+    ;R9 = columna
+    
 
     ;PROXIMA DIRECCION = BASE + (FILA * nCOLUMNAS + COLUMNAS)
     mov rax, r8
@@ -63,6 +64,43 @@ validarMovimiento:
 
     .fin_validarMovimiento:
     ret
+
+puntaje:
+    ;   PUNTAJE = (NIVEL * 1000) + (MONEDAS * 100) - (PASOS)
+
+    ;RCX = numero de monedas
+    ;EDX/RDX = pasos dados
+    ;R8 = niveles
+
+
+    ;Limpieza
+    xor eax, eax
+
+    mov ecx, ecx
+    mov edx, edx
+    mov r8d, r8d
+
+    mov rax, 1000
+    imul rax, r8
+
+    mov r9, 100
+    imul r9, rcx
+
+    add rax, r9
+    sub rax, rdx
+
+    cmp eax, 0
+    jl .negativo
+    jmp .fin_puntaje
+
+    .negativo:
+    mov eax, 0
+
+    .fin_puntaje:
+    ret  
+
+
+
 
 detectarObjeto:
     xor eax, eax
@@ -93,3 +131,39 @@ detectarObjeto:
 
     .fin_detectarObjeto:
     ret
+
+celdasLibres:
+   push rsi
+    xor eax, eax
+
+    ;RCX = matrix
+    ;EDX/RDX = nCeldas
+
+    xor rax, rax 
+    lea rsi, [rcx]
+
+    .loop_matriz:
+    cmp rdx, 0
+    je .fin_celdasLibres
+
+    cmp byte [rsi], '.'
+    je .es_libre
+
+    cmp byte [rsi], 'K'
+    je .es_libre
+
+    jmp .siguiente
+
+    .es_libre:
+    inc eax
+    
+    .siguiente:
+    inc rsi
+    dec rdx
+    jmp .loop_matriz
+
+
+    .fin_celdasLibres:
+    pop rsi
+    ret
+

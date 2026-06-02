@@ -16,5 +16,7 @@
 #define AMARILLO "\x1b[38;5;226m"
 #define GRIS "\x1b[38;5;244m"
 #define GRISOSCURO "\x1b[38;5;237m"
+#define COLORllAVE "\x1b[38;5;17m"
+
 
 #endif
