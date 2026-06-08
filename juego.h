@@ -17,7 +17,7 @@ enum MODO_JUEGO {MENU, NIVEL_1, NIVEL_2, NIVEL_3, FINAL};
 //Funciones C
 void cursor();
 bool juego_mov(enum MODO_JUEGO *modo_juego, int *num_Pasos);
-void llenar_matriz(char mat[][COLUMNAS],  int num_monedas, const char *nombre_archivo);
+void llenar_matriz(char mat[][COLUMNAS], const char *nombre_archivo);
 void imprimir_matriz(enum MODO_JUEGO modo_juego, char mat [][COLUMNAS], struct Coordenadas pos, int monedas_recolectadas, int num_Pasos);
 void movimiento(char mat[][COLUMNAS], struct Coordenadas *pos, char mov, bool *victoria, int *monedas_recolectadas, int *num_Pasos);
 void imprimirVictoria(enum MODO_JUEGO *modo_juego, int monedas_recolectadas, int t_monedas,int num_Pasos, int celdas_Libres);

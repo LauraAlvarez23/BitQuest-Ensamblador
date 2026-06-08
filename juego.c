@@ -75,7 +75,7 @@ void colores_ansi(){
 }
 
 
-void llenar_matriz(char mat[][COLUMNAS], int num_monedas, const char *nombre_archivo){
+void llenar_matriz(char mat[][COLUMNAS], const char *nombre_archivo){
     FILE *archivo = fopen(nombre_archivo, "r");
     if(archivo == NULL){
         printf("Error. No se pudo abrir el archivo del mapa. \n");
@@ -89,15 +89,14 @@ void llenar_matriz(char mat[][COLUMNAS], int num_monedas, const char *nombre_arc
     }
     fclose(archivo);
 
-    int i = 0;
-    struct Coordenadas punto_Moneda;
-    while(i < num_monedas){
-        punto_Moneda.x = (rand()%58) + 1;
-        punto_Moneda.y = (rand()%58) + 1;
-
-        if(validarMovimiento(mat, 60, punto_Moneda.x, punto_Moneda.y) != 1 && detectarObjeto(mat, COLUMNAS, punto_Moneda.x, punto_Moneda.y, '.') == 1){
-            mat[punto_Moneda.x][punto_Moneda.y] = 184;
-            i++;
+    for(int i=0; i<FILAS; i++){
+        for(int j=0; j<COLUMNAS; j++){
+            if(detectarObjeto(mat, COLUMNAS, i, j, '.') == 1){
+                int aleatorio = (rand()%6) + 1;
+                if(aleatorio == 3){
+                    mat[i][j] = 184;
+                }
+            }
         }
     }
 }
@@ -285,7 +284,6 @@ bool juego_mov(enum MODO_JUEGO *modo_juego, int *num_Pasos){
 
 
     int monedasRecolectadas = 0;
-    int totalMonedas = 23;
 
     t_monedas = 0;
 
@@ -300,13 +298,13 @@ bool juego_mov(enum MODO_JUEGO *modo_juego, int *num_Pasos){
     struct Coordenadas pos = {1,1};
 
     if(*modo_juego == NIVEL_1){
-        llenar_matriz(laberinto, totalMonedas, "mapa1.txt");
+        llenar_matriz(laberinto, "mapa1.txt");
         t_monedas = caracteresMapa(laberinto, FILAS*COLUMNAS, 184);
     }else if(*modo_juego == NIVEL_2){
-        llenar_matriz(laberinto, totalMonedas, "mapa2.txt");
+        llenar_matriz(laberinto, "mapa2.txt");
         t_monedas = caracteresMapa(laberinto, FILAS*COLUMNAS, 184);
     }else if(*modo_juego == NIVEL_3){
-         llenar_matriz(laberinto, totalMonedas, "mapa3.txt");
+         llenar_matriz(laberinto, "mapa3.txt");
          t_monedas = caracteresMapa(laberinto, FILAS*COLUMNAS, 184);
     }
     total_Monedas += t_monedas;
