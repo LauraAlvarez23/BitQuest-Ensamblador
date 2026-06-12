@@ -16,7 +16,6 @@ int main(){
     SetConsoleOutputCP(CP_UTF8);
     #endif
 
-    srand(time(NULL));
 
     printf(CYAN "╔══════════════════════════════════╗   \n" RESET);
     printf(CYAN "║        »»  LABERINTO ««          ║  \n" RESET);

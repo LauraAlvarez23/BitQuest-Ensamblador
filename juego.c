@@ -89,10 +89,12 @@ void llenar_matriz(char mat[][COLUMNAS], const char *nombre_archivo){
     }
     fclose(archivo);
 
+    srand(time(NULL));
+
     for(int i=0; i<FILAS; i++){
         for(int j=0; j<COLUMNAS; j++){
             if(detectarObjeto(mat, COLUMNAS, i, j, '.') == 1){
-                int aleatorio = (rand()%6) + 1;
+                int aleatorio = (rand()%100) + 1;
                 if(aleatorio == 3){
                     mat[i][j] = 184;
                 }
