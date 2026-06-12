@@ -4,19 +4,28 @@
 #include <ctype.h>
 #include "colores.h"
 #include <time.h>
+#include <windows.h>
 
 #include "juego.h"
 
 int main(){
     enum MODO_JUEGO modo_juego = MENU;
 
+    #ifdef _WIN32
+    UINT codificacion_original = GetConsoleOutputCP(); // Guardamos la codificación original para restaurarla al final
+    SetConsoleOutputCP(CP_UTF8);
+    #endif
+
     srand(time(NULL));
 
-    printf("=========== LABERINTO =========== \n");
-    printf("instrucciones insrucciones instrucciones \n");
-    printf("--- Presiona cualquier tecla --- \n -");
+    printf(CYAN "╔══════════════════════════════════╗   \n" RESET);
+    printf(CYAN "║        »»  LABERINTO ««          ║  \n" RESET);
+    printf(CYAN "╠══════════════════════════════════╣   \n");
+    printf("║      instrucciones insrucciones   %c \n");
+    printf("║"); printf(VERDE " --- Presiona cualquier tecla ---" RESET); printf(" ║ \n");
 
-    printf(CYAN "Menu de ayuda = H \n" RESET);
+    printf(CYAN "║      | Menu de ayuda = H |       ║\n" RESET);
+    printf(CYAN "╚══════════════════════════════════╝   \n" RESET);
 
     char caracter = tolower(_getch());
 
@@ -24,8 +33,12 @@ int main(){
         menuAyuda();
     }
     
-
     system("cls");
+
+    // Regresamos a la codificación original 
+    #ifdef _WIN32
+    SetConsoleOutputCP(codificacion_original);
+    #endif
 
     modo_juego = NIVEL_1;
     bool continuar = true;
@@ -42,6 +55,5 @@ int main(){
     _getch();
     system("cls");
 
-    
     return 0;
 }
