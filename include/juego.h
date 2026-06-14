@@ -6,11 +6,13 @@
 
 #include <stdbool.h>
 
+//Estructura para coordenadas
 struct Coordenadas{
     int x;
     int y;
 };
 
+//Enum para indicar en que parte del juego se encuentra el jugador
 enum MODO_JUEGO {MENU, NIVEL_1, NIVEL_2, NIVEL_3, FINAL};
 
 

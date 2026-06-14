@@ -2,6 +2,7 @@
 #define COLORES_H
 
 //COLORES
+//(Ansi color codes)
 #define RESET "\x1b[0m"
 #define ROJO "\x1b[38;5;160m"
 #define VERDE "\x1b[38;5;28m"
