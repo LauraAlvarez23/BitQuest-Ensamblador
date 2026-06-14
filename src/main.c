@@ -2,11 +2,11 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "colores.h"
 #include <time.h>
 #include <windows.h>
 
 #include "juego.h"
+#include "colores.h"
 
 int main(){
     enum MODO_JUEGO modo_juego = MENU;
@@ -16,11 +16,14 @@ int main(){
     SetConsoleOutputCP(CP_UTF8);
     #endif
 
+    system("cls");
 
     printf(CYAN "╔══════════════════════════════════╗   \n" RESET);
-    printf(CYAN "║        »»  LABERINTO ««          ║  \n" RESET);
+    printf(CYAN "║        " RESET); 
+    printf("»»  LABERINTO ««          ");
+    printf(CYAN "║\n" RESET);
     printf(CYAN "╠══════════════════════════════════╣   \n");
-    printf("║      instrucciones insrucciones   %c \n");
+    printf("║      instrucciones insrucciones    ║\n");
     printf("║"); printf(VERDE " --- Presiona cualquier tecla ---" RESET); printf(" ║ \n");
 
     printf(CYAN "║      | Menu de ayuda = H |       ║\n" RESET);

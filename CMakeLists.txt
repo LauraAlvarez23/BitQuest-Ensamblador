@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 
+#set(CMAKE_ASM_NASM_COMPILER "C:/nasm/nasm.exe")  # <- Para Laura que no le funcionaba (ya si)
+
 project (BitQuest-Ensamblador LANGUAGES C ASM_NASM)
 
 set(SOURCE
