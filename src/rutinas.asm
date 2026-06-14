@@ -95,7 +95,7 @@ puntaje:
     ;Limpieza
     xor eax, eax
 
-    ;"Reguardar" los datos para que no se corrompan
+    ;Limia la parte alta de los registros
     mov ecx, ecx
     mov edx, edx
     mov r8d, r8d
@@ -132,8 +132,8 @@ detectarObjeto:
 
     ;RCX = matriz
     ;EDX/RDX = nColumnas
-    ;R9 = columna
     ;R8 = fila
+    ;R9 = columna
     ;pila[RSP + 40] = caracter
 
     ;PROXIMA POSICION = BASE + (FILA * nCOLUMNAS + COLUMNAS)
