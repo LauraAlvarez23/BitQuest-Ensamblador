@@ -34,7 +34,7 @@ void menuAyuda(){
     /*  Se muestra un menu de ayuda, en el se indican las teclas para el movimiento del jugador, 
         junto con los caracteres importantes que se deben conocer para poder jugar                  */
 
-    printf(MORADO " ========== TECLAS ========== \n" RESET);
+    printf(MORADO "========== TECLAS ========== \n" RESET);
     printf(ROJO "W o w " RESET); printf("-> Arriba \n");
     printf(ROJO "S o s " RESET); printf("-> Abajo \n");
     printf(ROJO "A o a " RESET); printf("-> Izquierda \n");
@@ -125,15 +125,15 @@ void imprimir_matriz(enum MODO_JUEGO modo_juego, char mat [][COLUMNAS], struct C
     //Indica en que nivel se encuentra el jugador
     switch(modo_juego){
         case NIVEL_1: 
-            printf("\n====== NIVEL 1 ======\n");
+            printf(ROJO "\n====== NIVEL 1 ======\n" RESET);
             break;
 
         case NIVEL_2:
-            printf("\n====== NIVEL 2 ======\n");
+            printf(ROJO "\n====== NIVEL 2 ======\n" RESET);
             break;
 
         case NIVEL_3:
-            printf("\n====== NIVEL 3 ======\n");
+            printf(ROJO "\n====== NIVEL 3 ======\n" RESET);
             break;
 
         case FINAL: 
@@ -145,9 +145,9 @@ void imprimir_matriz(enum MODO_JUEGO modo_juego, char mat [][COLUMNAS], struct C
 
     //Informacion del juego 
     printf(GRIS "Salir con tecla 'q' \n" RESET);
-    printf("MONEDAS: %d/%d\n", monedas_Recolectadas, t_monedas);
-    printf("LLAVE: "); (tiene_llave) ? printf("* \n") : printf(" \n");
-    printf("PASOS: %d \n", num_Pasos);
+    printf(AZULOSCURO "MONEDAS: " RESET "%d/%d\n", monedas_Recolectadas, t_monedas);
+    printf(AZULREY "LLAVE: " RESET); (tiene_llave) ? printf("* \n") : printf(" \n");
+    printf(AZUL "PASOS: " RESET "%d \n", num_Pasos);
     printf("Posicion: (%d, %d) \n", pos.y, pos.x);
     printf("\n");
     
@@ -430,7 +430,7 @@ void imprimirVictoria(enum MODO_JUEGO *modo_juego, int monedasRecolectadas, int 
     system("cls");
 
     //Indica que nivel se acaba de superar
-    printf("==== VICTORIA ====\n");
+    printf(AMARILLO "==== VICTORIA ====\n" RESET);
     printf("Felicidades! Has superado el nivel ");
 
     //Datos para el resumen de la partida
@@ -462,8 +462,8 @@ void imprimirVictoria(enum MODO_JUEGO *modo_juego, int monedasRecolectadas, int 
     }
 
     //Se imprime la informacion del nivel 
-    printf("MONEDAS: %d/%d \n", monedasRecolectadas, t_monedas);
-    printf("PASOS: %d \n", num_Pasos);
+    printf(AMARILLO "MONEDAS: " RESET "%d/%d \n", monedasRecolectadas, t_monedas);
+    printf(BERRY "PASOS: " RESET "%d \n", num_Pasos);
     printf("CELDAS LIBRES: %d \n", celdas_Libres);
 
     printf("Para continuar, presione cualquier tecla!");
@@ -477,38 +477,40 @@ void final_Juego(enum MODO_JUEGO modo_juego){
 
     int total_puntaje = 0; 
 
-    printf("\n===========================================\n");
+    printf(AZUL "*============================================*\n" RESET);
     if(modo_juego == FINAL){
-        printf("FELICIDADES! HAS COMPLETADO EL JUEGO \n");
-        printf("yea \n");
+        printf(AZUL "||" AMARILLO "   FELICIDADES! HAS COMPLETADO EL JUEGO    " AZUL "||\n" RESET);
+        printf("||          yea :D               ||\n");
     }else{
-         printf(GRIS "* Juego terminado manualmente *\n" RESET);
+         printf(CYAN "||" GRIS " * Juego terminado manualmente *" CYAN "|| \n" RESET);
     }
-
+    printf(AZUL "*============================================*\n" RESET);
+    
+    printf(AZUL "._.__.__.__.__.___.___.___.__.\n" RESET);
     //Informacion importante de la partida
-    printf(AMARILLO "MONEDAS TOTALES: " RESET); printf("%d/%d \n", total_Monedas_Recolectadas, totalFinal_Monedas);
-    printf(AMARILLO "PASOS TOTALES: " RESET); printf("%d \n", total_Pasos);
-    printf("NIVELES COMPLETADOS: ");
+    printf("| "AMARILLO "MONEDAS TOTALES: " RESET); printf("%d/%d      |\n", total_Monedas_Recolectadas, totalFinal_Monedas);
+    printf("| "AMARILLO "PASOS TOTALES: " RESET); printf("%d         |\n", total_Pasos);
+    printf("| " NARANJA "NIVELES COMPLETADOS: " RESET);
 
     //Se calcula el puntaje final
     switch(modo_juego){
-        case NIVEL_1: printf("0"); 
+        case NIVEL_1: printf("0      |"); 
                         total_puntaje = puntaje(total_Monedas_Recolectadas, total_Pasos, 0);
                         break;
-        case NIVEL_2: printf("1"); 
+        case NIVEL_2: printf("1     |"); 
                         total_puntaje = puntaje(total_Monedas_Recolectadas, total_Pasos, 1);
                         break;
-        case NIVEL_3: printf("2"); 
+        case NIVEL_3: printf("2     |"); 
                         total_puntaje = puntaje(total_Monedas_Recolectadas, total_Pasos, 2);
                         break;
-        case FINAL: printf("3"); 
+        case FINAL: printf("3     |"); 
                     total_puntaje = puntaje(total_Monedas_Recolectadas, total_Pasos, 3);
                     break;
         default:
     }
     printf("\n");
 
-    printf("PUNTAJE FINAL: "); printf("%d", total_puntaje);
+    printf("| " BERRY "PUNTAJE FINAL: " RESET); printf("%d        |", total_puntaje);
 
-     printf("\n===========================================\n");
+    printf(AZUL "\n ._.__.__.__.__.___.___.___.__.\n" RESET);
 }

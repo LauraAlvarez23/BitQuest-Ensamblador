@@ -21,16 +21,17 @@ int main(){
     system("cls");
 
     //Menu inicial
-    printf(CYAN "╔══════════════════════════════════╗   \n" RESET);
-    printf(CYAN "║        " RESET); 
-    printf("»»  LABERINTO ««          ");
-    printf(CYAN "║\n" RESET);
-    printf(CYAN "╠══════════════════════════════════╣   \n");
-    printf("║      instrucciones insrucciones    ║\n");
-    printf("║"); printf(VERDE " --- Presiona cualquier tecla ---" RESET); printf(" ║ \n");
-
-    printf(CYAN "║      | Menu de ayuda = H |       ║\n" RESET);
-    printf(CYAN "╚══════════════════════════════════╝   \n" RESET);
+    printf(AZUL "╔══════════════════════════════════════╗   \n" RESET);
+    printf(AZUL "║        " RESET); 
+    printf("  »»  " ROJO2 "L" NARANJA "A" AMARILLO "B" VERDE "E" CYAN "R" AZUL "R" AZULREY "I" ROSA "N" MORADOCLARO "T" MORADO "0");
+    printf("           ");
+    printf(AZUL "«« ║\n" RESET);
+    printf(AZUL "╠══════════════════════════════════════╣ \n" RESET);
+    printf(AZUL "║                                      ║ \n" RESET);
+    printf(CYAN "║" RESET); printf(VERDE "   --- Presiona cualquier tecla --- " RESET); printf(CYAN "  ║ \n" RESET);
+    printf(CYAN "║          ( Menu de ayuda -> H )      ║\n" RESET);
+    printf(AZULOSCURO "║                                      ║ \n");
+    printf(AZULOSCURO "╚══════════════════════════════════════╝   \n" RESET);
 
     char caracter = tolower(_getch());
 

@@ -18,6 +18,12 @@
 #define GRIS "\x1b[38;5;244m"
 #define GRISOSCURO "\x1b[38;5;237m"
 #define COLORllAVE "\x1b[38;5;17m"
+#define AZUL "\x1b[38;5;81m"
+#define VERDE_B "\x1b[38;5;46m"
+#define NARANJA "\x1b[38;5;166m"
+#define AZULOSCURO "\x1b[38;5;18m"
+#define MORADOCLARO "\x1b[38;5;164m"
+#define ROJO2 "\x1b[38;5;9m"
 
 
 #endif
