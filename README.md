@@ -1,4 +1,5 @@
-# Proyecto de la materia de Lenguaje Ensablado - BitQuest: Explorador de Matrices con C y NASM
+# BitQuest: Explorador de Matrices con C y NASM
+##  - Proyecto de la materia de Lenguaje Ensablador -
 ## Equipo
 - Rubén Altamira Martínez
 - Aranza Arellano Delgado
