@@ -1,5 +1,5 @@
 # BitQuest: Explorador de Matrices con C y NASM
-##  - Proyecto de la materia de Lenguaje Ensablador -
+##  - Proyecto de la materia Lenguaje Ensamblador -
 ## Equipo
 - Rubén Altamira Martínez
 - Aranza Arellano Delgado
@@ -7,7 +7,7 @@
 - Jesús Eugenio Hernández Rodríguez 
 
 ## Requisitos de compilación
-### instalación de compiladores y herramientas
+### Instalación de compiladores y herramientas
    Inicialmente se necesita tener instalado en compilador `MSYS2`, para eso podemos correr el siguiente comando en la terminal de windows:
 
 ```powershell
@@ -73,5 +73,5 @@ Este proyecto utiliza CMake para gestionar la construcción del ejecutable, enla
 Una vez que la compilación haya sido exitosa, puedes iniciar el laberinto ejecutando el archivo generado directamente desde la terminal:
 
 ```powershell
-.\build\Laberinto.exe
+.\build\BitQuest-Ensamblador.exe
 ```
