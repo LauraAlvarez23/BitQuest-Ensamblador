@@ -491,7 +491,7 @@ void final_Juego(enum MODO_JUEGO modo_juego){
     
     printf(AZUL "._.__.__.__.__.___.___.___._.\n" RESET);
     //Informacion importante de la partida
-    printf(RESET "| "AMARILLO "MONEDAS TOTALES: " RESET "%d/%d " "%*s\n", total_Monedas_Recolectadas, t_monedas, 5, "|"); 
+    printf(RESET "| "AMARILLO "MONEDAS TOTALES: " RESET "%d/%d " "%*s\n", total_Monedas_Recolectadas, totalFinal_Monedas, 5, "|"); 
     printf(RESET "| "AMARILLO "PASOS TOTALES: " RESET "%-10d |\n", total_Pasos);
     printf(RESET "| " NARANJA "NIVELES COMPLETADOS: " RESET);
 
