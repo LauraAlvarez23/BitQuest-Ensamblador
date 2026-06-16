@@ -23,9 +23,8 @@ int main(){
     //Menu inicial
     printf(AZUL "╔══════════════════════════════════════╗   \n" RESET);
     printf(AZUL "║        " RESET); 
-    printf("  »»  " ROJO2 "L" NARANJA "A" AMARILLO "B" VERDE "E" CYAN "R" AZUL "R" AZULREY "I" ROSA "N" MORADOCLARO "T" MORADO "0");
-    printf("           ");
-    printf(AZUL "«« ║\n" RESET);
+    printf("  »»  " ROJO2 "L" NARANJA "A" AMARILLO "B" VERDE "E" CYAN "R"  AZULREY "I" ROSA "N" MORADOCLARO "T" MORADO "0");
+    printf(RESET "  ««" AZUL"           ║\n" RESET);
     printf(AZUL "╠══════════════════════════════════════╣ \n" RESET);
     printf(AZUL "║                                      ║ \n" RESET);
     printf(CYAN "║" RESET); printf(VERDE "   --- Presiona cualquier tecla --- " RESET); printf(CYAN "  ║ \n" RESET);
